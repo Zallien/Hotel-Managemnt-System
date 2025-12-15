@@ -1,0 +1,6 @@
+- Primary Accent: Royal Gold #D4AF37 – Logo, buttons, highlights
+- Dark Contrast: Charcoal Black #1C1C1C – Background, text, nav bar
+- Soft Background: Champagne Mist #F7E7CE – Panels, cards, subtle UI
+- Highlight Accent: Star Bronze #B8860B – Icons, hover effects
+- Neutral Support: Warm Gray #A9A9A9 – Borders, disabled states
+- Call-to-Action: Deep Sapphire #0F52BA – Links, primary buttons
