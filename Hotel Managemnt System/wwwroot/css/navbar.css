@@ -5,4 +5,23 @@ div ul{
     list-style:none;
 }
 
+#mainmenus a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    width: 100%;
+    padding: 8px 5px;
+    margin: 0;
+    display:inline-block;
+    transition: all 300ms ease-in-out;
+}
+
+    #mainmenus a:hover {
+        color: #1C1C1C;
+        background-color: #D4AF37;
+        border-radius: 10px;
+    }
+
+
 

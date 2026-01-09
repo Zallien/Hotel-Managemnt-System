@@ -11,20 +11,16 @@
 <body>
     <div class="container w-100 h-100">
         <section id="companylogo" class="flex-row align-items-center justify-content-between py-3">
-            <img src="Resources/astriyalogo.jpg" alt="Astriya Logo"/>
+            <img src="Resources/ASLogo.png" alt="Astriya Logo"/>
             <label class="text-white">Astriya Hotel</label>
         </section>
-        <ul class="text-white">
-            <li>
-                <a asp-area="" asp-action="Index">Home</a>
-            </li>
-            <li>
-                <a asp-area="" asp-action="Privacy">Item1</a>
-            </li>
-            <li>
-                <a asp-area="" asp-action="Item2">Item2</a>
-            </li>
-        </ul>
+        <section id="mainmenus" class="flex-column">
+            <a asp-area="" asp-page="Index">Home</a>
+            <a asp-area="" asp-page="Bookingpage">Booking</a>
+            <a asp-area="" asp-page="Privacy">Management</a>
+            <a asp-area="" asp-page="Item2">Employee</a>
+            <a asp-area="" asp-page="Item2">Payment</a>
+        </section>
     </div>
 </body>
 </html>
