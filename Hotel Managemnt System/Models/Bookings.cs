@@ -1,7 +1,12 @@
-﻿namespace Hotel_Managemnt_System.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Hotel_Managemnt_System.Models
 {
     public class Bookings
     {
+
+        [Key]
+        public int Row { get; set; }
         // Core booking info
         public Guid BookingId { get; set; }
         public string GuestName { get; set; }
