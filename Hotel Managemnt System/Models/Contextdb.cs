@@ -28,6 +28,13 @@ namespace Hotel_Managemnt_System.Models
                 .Property(e => e.Row)
                 .UseIdentityColumn();
             });
+            modelBuilder.Entity<Bookings>(Entity =>
+            {
+                Entity.ToTable("Bookings");
+                Entity
+                .Property(e => e.Row)
+                .UseIdentityColumn();
+            });
         }
 
 
