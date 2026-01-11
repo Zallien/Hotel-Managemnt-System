@@ -20,6 +20,13 @@ builder.Services.AddDbContext<Hotel_Managemnt_System.Models.Contextdb>(options =
 builder.Services.AddSingleton<IBooking, BookingServices>();
 
 
+//Register HttpClient
+builder.Services.AddHttpClient<IBooking, BookingServices>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
+
+
 
 
 var app = builder.Build();
