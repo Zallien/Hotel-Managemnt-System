@@ -17,7 +17,18 @@
         <section id="mainmenus" class="flex-column">
             <a asp-area="" asp-page="Index">Home</a>
             <a asp-area="" asp-page="Bookingpage">Booking</a>
-            <a asp-area="" asp-page="Privacy">Management</a>
+
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="managementDropdown"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Management
+                </a>
+
+                <ul class="dropdown-menu p-2" aria-labelledby="managementDropdown">
+                    <li><a class="dropdown-item" asp-area="" asp-page="Rooms">Rooms</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-page="Inventory">Inventory</a></li>
+                </ul>
+            </div>
             <a asp-area="" asp-page="Item2">Employee</a>
             <a asp-area="" asp-page="Item2">Payment</a>
         </section>

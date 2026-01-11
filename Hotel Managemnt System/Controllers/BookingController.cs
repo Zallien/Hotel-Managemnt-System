@@ -58,5 +58,73 @@ namespace Hotel_Managemnt_System.Controllers
             return allbookings;
         }
 
+        [HttpPost("AddBooking")]
+        public async Task<bool> AddBooking([FromBody] AddBookingModel bookingdetails)
+        {
+            try
+            {
+                // Generate sequential booking number based on today's date
+                string datePart = DateTime.Now.ToString("yyyyMMdd");
+
+                // Count how many bookings already exist today
+                int countToday = await _db.Bookings
+                    .CountAsync(b => b.CreatedAt.Date == DateTime.Today);
+
+                int nextSequence = countToday + 1;
+                string sequencePart = nextSequence.ToString("D3"); // pad with zeros (001, 002, …)
+
+                string bookingNumber = $"{datePart}-{sequencePart}";
+
+                // Create new booking
+                Guid bookingId = Guid.NewGuid();
+                Bookings newBooking = new Bookings
+                {
+                    BookingId = bookingId,
+                    BookingNumber = bookingNumber,
+                    GuestName = bookingdetails.GuestName,
+                    GuestEmail = bookingdetails.GuestEmail,
+                    GuestPhone = bookingdetails.GuestPhone,
+                    RoomTypeId = bookingdetails.RoomType,
+                    RoomNumber = bookingdetails.RoomNumber,
+                    CheckInDate = bookingdetails.CheckIn,
+                    CheckOutDate = bookingdetails.CheckOut,
+                    TotalAmount = bookingdetails.TotalAmount,
+                    PaymentStatus = bookingdetails.PaymentStatus,
+                    BookingStatus = bookingdetails.BookingStatus,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                };
+
+                // Save to database
+                await _db.Bookings.AddAsync(newBooking);
+                await _db.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // log ex if needed
+                return false;
+            }
+        }
+
+        [HttpGet("GetAllBookings")]
+        public async Task<List<DisplayBooking>> GetAllBookings()
+        {
+            return await (from b in _db.Bookings
+                          join r in _db.RoomTypes on b.RoomTypeId equals r.RoomTypeId
+                          select new DisplayBooking
+                          {
+                              BookingId = b.BookingId,
+                              GuestName = b.GuestName,
+                              CheckIn = b.CheckInDate,
+                              CheckOut = b.CheckOutDate,
+                              RoomTypeName = r.RoomTypeName,
+                              RoomNumber = b.RoomNumber
+                          }).ToListAsync();
+        }
+
+
+
     }
 }

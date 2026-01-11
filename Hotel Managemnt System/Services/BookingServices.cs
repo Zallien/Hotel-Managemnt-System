@@ -19,7 +19,7 @@ namespace Hotel_Managemnt_System.Services
 
             try
             {
-                // BaseAddress is configured in Program.cs, so only relative path is needed
+                
                 var response = await _httpClient.PostAsJsonAsync("api/Booking/GetAllBookingFilterized", filterModel);
 
                 if (response.IsSuccessStatusCode)

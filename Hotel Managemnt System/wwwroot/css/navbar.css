@@ -25,3 +25,22 @@ div ul{
 
 
 
+
+@media (hover: hover) and (pointer: fine) {
+    .nav-item.dropdown:hover > .dropdown-menu {
+        background-color: #1C1C1C;
+        top: 0;
+        transform: translateX(170px);
+        display: block;
+    }
+
+    .nav-item.dropdown:hover > .nav-link.dropdown-toggle {
+        color: #1C1C1C;
+        background-color: #D4AF37;
+        border-radius: 6px;
+    }
+}
+
+
+
+

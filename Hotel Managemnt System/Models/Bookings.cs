@@ -9,6 +9,7 @@ namespace Hotel_Managemnt_System.Models
         public int Row { get; set; }
         // Core booking info
         public Guid BookingId { get; set; }
+        public string BookingNumber { get; set; }
         public string GuestName { get; set; }
         public string GuestEmail { get; set; }
         public string GuestPhone { get; set; }
