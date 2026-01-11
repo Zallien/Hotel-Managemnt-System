@@ -18,18 +18,37 @@ namespace Hotel_Managemnt_System.Controllers
         }
 
         [HttpPost("GetAllBookingFilterized")]
-        public async Task<List<Bookings>> GetAllBookingFilterized([FromBody] BookingFilterationModel filterModel)
+        public async Task<List<DisplayBooking>> GetAllBookingFilterized([FromBody] BookingFilterationModel filterModel)
         {
-            List<Bookings> allbookings = new List<Bookings>();
+            List<DisplayBooking> allbookings = new List<DisplayBooking>();
 
             try
             {
-                allbookings = await _db.Bookings
-                    .Where(x => string.IsNullOrEmpty(filterModel.Searchvalue)
-                                || x.GuestName.ToLower().Contains(filterModel.Searchvalue))
-                    .Skip((filterModel.PageNumber - 1) * filterModel.Counts)
-                    .Take(filterModel.Counts)
-                    .ToListAsync();
+                //allbookings = await _db.Bookings
+                //    .Where(x => string.IsNullOrEmpty(filterModel.Searchvalue)
+                //                || x.GuestName.ToLower().Contains(filterModel.Searchvalue))
+                //    .Skip((filterModel.PageNumber - 1) * filterModel.Counts)
+                //    .Take(filterModel.Counts)
+                //    .ToListAsync();
+
+                allbookings = await (from b in _db.Bookings
+                                     join r in _db.RoomTypes on b.RoomTypeId equals r.RoomTypeId
+                                     where string.IsNullOrEmpty(filterModel.Searchvalue)
+                                           || b.GuestName.ToLower().Contains(filterModel.Searchvalue)
+                                     select new DisplayBooking
+                                     {
+                                         BookingId = b.BookingId,
+                                         GuestName = b.GuestName,
+                                         CheckIn = b.CheckInDate,
+                                         CheckOut = b.CheckOutDate,
+                                         RoomTypeName = r.RoomTypeName,
+                                         RoomNumber = b.RoomNumber
+                                     })
+                                    .Skip((filterModel.PageNumber - 1) * filterModel.Counts)
+                                    .Take(filterModel.Counts)
+                                    .ToListAsync();
+
+
             }
             catch (Exception ex)
             {

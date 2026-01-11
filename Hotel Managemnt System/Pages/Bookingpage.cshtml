@@ -35,15 +35,20 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- sample rows -->
-                <tr>
-                    <td>Deluxe</td>
-                    <td>John Smith</td>
-                    <td>2026-01-10</td>
-                    <td>2026-01-12</td>
-                    <td>101</td>
-                    <td><button class="btn btn-primary btn-sm">Edit</button></td>
-                </tr>
+                @foreach (var booking in Model.BookingList)
+                {
+                    <tr>
+                        <td>@booking.RoomTypeName</td>
+                        <td>@booking.GuestName</td>
+                        <td>@booking.CheckIn.ToShortDateString()</td>
+                        <td>@booking.CheckOut.ToShortDateString()</td>
+                        <td>@booking.RoomNumber</td>
+                        <td>
+                            <!-- BookingId stored in data-id -->
+                            <button class="btn btn-sm btn-primary" data-id="@booking.BookingId">Edit</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </section>

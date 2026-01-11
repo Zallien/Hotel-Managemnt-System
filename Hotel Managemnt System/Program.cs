@@ -1,3 +1,4 @@
+using Hotel_Managemnt_System.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,12 @@ builder.Services.AddDbContext<Hotel_Managemnt_System.Models.Contextdb>(options =
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+//Regiter Services and Interfaces
+builder.Services.AddSingleton<IBooking, BookingServices>();
+
+
+
 
 var app = builder.Build();
 
