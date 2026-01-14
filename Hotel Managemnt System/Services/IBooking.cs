@@ -7,5 +7,6 @@ namespace Hotel_Managemnt_System.Services
     {
 
         public Task<List<DisplayBooking>> GetAllBookingFilterized(BookingFilterationModel filterModel);
+        public Task<bool> AddBooking(AddBookingModel bookingModel);
     }
 }

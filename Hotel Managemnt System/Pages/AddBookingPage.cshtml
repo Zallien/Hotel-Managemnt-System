@@ -1,0 +1,104 @@
+﻿@page
+@model Hotel_Managemnt_System.Pages.AddBookingPageModel
+@{
+    ViewData["Title"] = "Add Booking";
+}
+
+<style>
+    #ParentSection{
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #ParentSection{
+        scrollbar-width:none;
+    }
+</style>
+
+<section id="ParentSection" class="p-2 w-100 pb-4">
+    <h3 class="mb-3 fw-bold p-2">Add Booking</h3>
+    <form method="Post" class="form">
+        <h4 class="mb-2 pb-2 border-0 border-bottom">Guest Information</h4>
+        <div class="mb-2">
+            <label asp-for="Booking.GuestName" class="form-label">Guest Name</label>
+            <input asp-for="Booking.GuestName" class="form-control" type="text" />
+            <span asp-validation-for="Booking.GuestName" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.GuestEmail" class="form-label">Guest Email</label>
+                <input asp-for="Booking.GuestEmail" class="form-control" type="text" />
+                <span asp-validation-for="Booking.GuestEmail" class="text-danger"></span>
+            </div>
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.GuestPhone" class="form-label">Guest Phone</label>
+                <input asp-for="Booking.GuestPhone" class="form-control" type="text" />
+                <span asp-validation-for="Booking.GuestPhone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.NumberOfGuests" class="form-label">Guest Email</label>
+                <input asp-for="Booking.NumberOfGuests" class="form-control" type="number" />
+                <span asp-validation-for="Booking.NumberOfGuests" class="text-danger"></span>
+            </div>
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.SpecialRequests" class="form-label">Guest Phone</label>
+                <textarea asp-for="Booking.SpecialRequests" class="form-control" rows="3">
+
+                </textarea>
+                <span asp-validation-for="Booking.SpecialRequests" class="text-danger"></span>
+            </div>
+        </div>
+        <h4 class="mb-2 pb-2 border-0 border-bottom">Room Information</h4>
+        <div class="row mb-3">
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.RoomType" class="form-label">Room Type</label>
+                <select asp-for="Booking.RoomType" class="form-select">
+                    <option value="">Select RoomType</option>
+                </select>
+                <span asp-validation-for="Booking.RoomType" class="text-danger"></span>
+            </div>
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.RoomNumber" class="form-label">Room Number</label>
+                <input asp-for="Booking.RoomNumber" class="form-control" type="number" />
+                <span asp-validation-for="Booking.RoomNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <h4 class="mb-2 pb-2 border-0 border-bottom">Booking Date Information</h4>
+        <div class="row mb-3">
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.CheckIn" class="form-label">Room Type</label>
+                <input asp-for="Booking.CheckIn" type="date" class="form-control"/>
+                <span asp-validation-for="Booking.CheckIn" class="text-danger"></span>
+            </div>
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.CheckOut" class="form-label">Room Type</label>
+                <input asp-for="Booking.CheckOut" type="date" class="form-control" />
+                <span asp-validation-for="Booking.CheckOut" class="text-danger"></span>
+            </div>
+        </div>
+        <h4 class="mb-2 pb-2 border-0 border-bottom">Payment Information</h4>
+        <div class="row mb-3">
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.TotalAmount" class="form-label">Room Type</label>
+                <input asp-for="Booking.TotalAmount" type="number" class="form-control" readonly/>
+                <span asp-validation-for="Booking.TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.CheckOut" class="form-label">Payment Status</label>
+                <select asp-for="Booking.PaymentStatus" class="form-select">
+                    <option value="">Select Payment Status</option>
+                </select>
+                <span asp-validation-for="Booking.PaymentStatus" class="text-danger"></span>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

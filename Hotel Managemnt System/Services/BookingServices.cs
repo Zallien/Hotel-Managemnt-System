@@ -13,6 +13,7 @@ namespace Hotel_Managemnt_System.Services
             _httpClient = httpClient;
         }
 
+        //Get Booking with filteration
         public async Task<List<DisplayBooking>> GetAllBookingFilterized(BookingFilterationModel filterModel)
         {
             var allbookings = new List<DisplayBooking>();
@@ -39,6 +40,32 @@ namespace Hotel_Managemnt_System.Services
             }
 
             return allbookings;
+        }
+
+        //Add Booking
+        public async Task<bool> AddBooking(AddBookingModel bookingModel)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Booking/AddBooking", bookingModel);
+                if (response.IsSuccessStatusCode)
+                {
+                    var Res = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<bool>(Res);
+                    return result;
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API error: {response.StatusCode}, content: {error}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in AddBooking: {ex.Message}");
+                return false;
+            }
         }
     }
 }

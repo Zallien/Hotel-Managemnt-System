@@ -92,7 +92,9 @@ namespace Hotel_Managemnt_System.Controllers
                     PaymentStatus = bookingdetails.PaymentStatus,
                     BookingStatus = bookingdetails.BookingStatus,
                     CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    UpdatedAt = DateTime.Now,
+                    NumberOfGuests = bookingdetails.NumberOfGuests,
+                    SpecialRequests = bookingdetails.SpecialRequests
                 };
 
                 // Save to database
