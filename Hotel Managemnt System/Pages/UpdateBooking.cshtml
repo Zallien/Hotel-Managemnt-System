@@ -1,25 +1,26 @@
 ﻿@page
-@model Hotel_Managemnt_System.Pages.AddBookingPageModel
+@model Hotel_Managemnt_System.Pages.UpdateBookingModel
 @{
-    ViewData["Title"] = "Add Booking";
+    ViewData["Title"] = "Edit Booking";
 }
 
 <style>
-    #ParentSection{
+    #ParentSection {
         height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
 
-    #ParentSection{
-        scrollbar-width:none;
+    #ParentSection {
+        scrollbar-width: none;
     }
 </style>
 
 <section id="ParentSection" class="p-2 w-100 pb-4">
-    <h3 class="mb-3 fw-bold p-2">Add Booking</h3>
+    <h3 class="mb-3 fw-bold p-2">Edit Booking</h3>
     <form method="Post" class="form">
         <h4 class="mb-2 pb-2 border-0 border-bottom">Guest Information</h4>
+        <input type="hidden" asp-for="Booking.BookingId" />
         <div class="mb-2">
             <label asp-for="Booking.GuestName" class="form-label">Guest Name</label>
             <input asp-for="Booking.GuestName" class="form-control" type="text" required />
@@ -56,13 +57,13 @@
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomType" class="form-label">Room Type</label>
                 <select asp-for="Booking.RoomType" class="form-select" asp-items="Model.SelectRoomType" required>
-                    <option value="@Guid.Empty">Select RoomType</option>
+                    <option value="@Guid.Empty" selected hidden>Select RoomType</option>
                 </select>
                 <span asp-validation-for="Booking.RoomType" class="text-danger"></span>
             </div>
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomNumber" class="form-label">Room Number</label>
-                <input asp-for="Booking.RoomNumber" class="form-control" type="number" required/>
+                <input asp-for="Booking.RoomNumber" class="form-control" type="number" required />
                 <span asp-validation-for="Booking.RoomNumber" class="text-danger"></span>
             </div>
         </div>
@@ -103,7 +104,7 @@
         </div>
         <div class="d-flex flex-row align-items-center justify-content-end">
             <a class="text-decoration-none text-white btn btn-secondary mx-2" asp-page="Bookingpage">Back</a>
-            <input type="submit" value="Add Booking" class="btn btn-primary mx-2" />
+            <input type="submit" value="Update Booking" class="btn btn-primary mx-2" />
         </div>
     </form>
 </section>

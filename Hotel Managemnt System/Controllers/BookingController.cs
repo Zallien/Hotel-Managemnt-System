@@ -110,6 +110,79 @@ namespace Hotel_Managemnt_System.Controllers
             }
         }
 
+        [HttpPost("UpdateBooking")]
+        public async Task<bool> UpdateBooking([FromBody] AddBookingModel bookingdetails)
+        {
+            try
+            {
+                var existingBooking = await _db.Bookings
+                    .FirstOrDefaultAsync(b => b.BookingId == bookingdetails.BookingId);
+                if (existingBooking == null)
+                {
+                    return false; // Booking not found
+                }
+                // Update booking details
+                existingBooking.GuestName = bookingdetails.GuestName;
+                existingBooking.GuestEmail = bookingdetails.GuestEmail;
+                existingBooking.GuestPhone = bookingdetails.GuestPhone;
+                existingBooking.RoomTypeId = bookingdetails.RoomType;
+                existingBooking.RoomNumber = bookingdetails.RoomNumber;
+                existingBooking.CheckInDate = bookingdetails.CheckIn;
+                existingBooking.CheckOutDate = bookingdetails.CheckOut;
+                existingBooking.TotalAmount = bookingdetails.TotalAmount;
+                existingBooking.PaymentStatus = bookingdetails.PaymentStatus;
+                existingBooking.BookingStatus = bookingdetails.BookingStatus;
+                existingBooking.UpdatedAt = DateTime.Now;
+                existingBooking.NumberOfGuests = bookingdetails.NumberOfGuests;
+                existingBooking.SpecialRequests = bookingdetails.SpecialRequests;
+
+                // Save changes to database
+                _db.Bookings.Update(existingBooking);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // log ex if needed
+                return false;
+            }
+        }
+
+        [HttpPost("GetBookingById")]
+        public async Task<AddBookingModel> GetBookingById([FromBody] Guid BookingId)
+        {
+            AddBookingModel bookingModel = new AddBookingModel();
+            try
+            {
+                var booking = await _db.Bookings
+                    .FirstOrDefaultAsync(b => b.BookingId == BookingId);
+                if (booking != null)
+                {
+                    bookingModel = new AddBookingModel
+                    {
+                        BookingId = booking.BookingId,
+                        GuestName = booking.GuestName,
+                        GuestEmail = booking.GuestEmail,
+                        GuestPhone = booking.GuestPhone,
+                        RoomType = booking.RoomTypeId,
+                        RoomNumber = booking.RoomNumber,
+                        CheckIn = booking.CheckInDate,
+                        CheckOut = booking.CheckOutDate,
+                        TotalAmount = booking.TotalAmount,
+                        PaymentStatus = booking.PaymentStatus,
+                        BookingStatus = booking.BookingStatus,
+                        NumberOfGuests = booking.NumberOfGuests,
+                        SpecialRequests = booking.SpecialRequests
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                // log ex if needed
+            }
+            return bookingModel;
+        }
+
         [HttpGet("GetAllBookings")]
         public async Task<List<DisplayBooking>> GetAllBookings()
         {

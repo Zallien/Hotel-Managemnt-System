@@ -23,10 +23,10 @@ namespace Hotel_Managemnt_System.ServiceModels
         public int RoomNumber { get; set; }
 
         // Booking Details
-        [Required(ErrorMessage = "Check In Date is Required")]
-        public DateTime CheckIn { get; set; }
+        [Required(ErrorMessage = "Check In Date is Required"), Range(typeof(DateTime), "2024-01-01", "2099-12-31")]
+        public DateTime CheckIn { get; set; } = DateTime.Now;
         [Required(ErrorMessage = "Check Out Date is Required")]
-        public DateTime CheckOut { get; set; }
+        public DateTime CheckOut { get; set; } = DateTime.Now.AddDays(1);
 
         // Payment Details
         [Required(ErrorMessage = "Total Amount is Required")]
@@ -38,7 +38,7 @@ namespace Hotel_Managemnt_System.ServiceModels
 
         //Guest
         [Required(ErrorMessage = "Number of Guest is Required")]
-        public int NumberOfGuests { get; set; }
+        public int NumberOfGuests { get; set; } = 1;
         public string SpecialRequests { get; set; }
 
 

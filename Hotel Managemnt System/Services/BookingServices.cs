@@ -67,5 +67,63 @@ namespace Hotel_Managemnt_System.Services
                 return false;
             }
         }
+
+        //Get Booking by ID
+        public async Task<AddBookingModel> GetBookingById(Guid BookingId)
+        {
+            AddBookingModel addBookingModel = new AddBookingModel();
+            try
+            {
+                var bookingid = new { BookingId = BookingId };
+                var response = await _httpClient.PostAsJsonAsync("api/Booking/GetBookingById", BookingId);
+                if (response.IsSuccessStatusCode)
+                {
+                    var Res = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<AddBookingModel>(Res);
+                    addBookingModel = result;
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API error: {response.StatusCode}, content: {error}");
+                    addBookingModel = null;
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return addBookingModel;
+        }
+
+        //Update Booking
+        public async Task<bool> UpdateBooking(AddBookingModel bookingModel)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Booking/UpdateBooking", bookingModel);
+                if (response.IsSuccessStatusCode)
+                {
+                    var Res = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<bool>(Res);
+                    return result;
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API error: {response.StatusCode}, content: {error}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in UpdateBooking: {ex.Message}");
+                return false;
+            }
+        }
+
+
     }
 }

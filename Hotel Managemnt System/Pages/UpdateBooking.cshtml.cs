@@ -1,18 +1,19 @@
+using Hotel_Managemnt_System.Models;
 using Hotel_Managemnt_System.ServiceModels;
 using Hotel_Managemnt_System.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
 
 namespace Hotel_Managemnt_System.Pages
 {
-    public class AddBookingPageModel : PageModel
+    public class UpdateBookingModel : PageModel
     {
         [BindProperty]
-        public AddBookingModel Booking { get; set; } = new();
-        private readonly IBooking _bookingservice;
+        public AddBookingModel Booking { get; set; } = new AddBookingModel();
+        private readonly IBooking _bookingService;
         private readonly IRoomServices _roomservice;
+
         public SelectList SelectRoomType { get; set; }
         public SelectList SelectBookingStatus { get; set; } = new SelectList(new[]
         {
@@ -28,27 +29,51 @@ namespace Hotel_Managemnt_System.Pages
         }, "Value", "Text");
 
 
-        public AddBookingPageModel(IBooking bookingservice, IRoomServices roomservice)
+        public UpdateBookingModel(IBooking bookingService, IRoomServices roomservice)
         {
-            _bookingservice = bookingservice;
+            _bookingService = bookingService;
             _roomservice = roomservice;
         }
 
-        public async Task OnGetAsync()
+
+        public async Task<IActionResult> OnGetAsync(Guid bookingId)
         {
+            if (bookingId == Guid.Empty)
+            {
+                return RedirectToPage("Bookingpage");
+            }
+
             await LoadRoomTypesAsync();
+            await LoadBookingDetailsAsync(bookingId);
+
+            if (Booking == null)
+            {
+                return RedirectToPage("Bookingpage");
+            }
+
+            Booking.BookingId = bookingId;
+            return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                await LoadRoomTypesAsync();
                 return Page();
             }
 
-            await _bookingservice.AddBooking(Booking);
+            if (Booking.BookingId == Guid.Empty)
+            {
+                await LoadRoomTypesAsync();
+                return Page();
+            }
+
+            await _bookingService.UpdateBooking(Booking);
             return RedirectToPage("Bookingpage");
         }
+
 
         private async Task LoadRoomTypesAsync()
         {
@@ -61,6 +86,21 @@ namespace Hotel_Managemnt_System.Pages
             {
 
             }
+        }
+
+        private async Task LoadBookingDetailsAsync(Guid bookingId)
+        {
+            try
+            {
+                // Assuming there's a method in IBooking to get booking details by ID
+                Booking = await _bookingService.GetBookingById(bookingId);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+            }
+
+
         }
     }
 }
