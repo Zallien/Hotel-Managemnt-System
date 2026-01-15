@@ -12,13 +12,17 @@
     <section id="bookingheader" class="d-flex justify-content-between align-items-center mb-3">
         <h3>Booking Records</h3>
         <div class="d-flex gap-2">
-            <input type="text" id="searchBox" class="form-control form-control-sm"
-                   placeholder="Search guest name..." onkeyup="filterGuests()" />
-
-            <a class="px-3 d-block text-black" asp-page="AddBookingPage" id="AddBookingBTN">Add Booking</a>
+            <form method="post" asp-page-handler="Search" class="d-flex flex-row">
+                <input type="text" id="searchBox" class="form-control form-control-sm"
+                       placeholder="Search guest name..." asp-for="SearchValue" />
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </form>
         </div>
+        
     </section>
-
+    <section class="d-flex justify-content-end align-items-center mb-3">
+        <a class="px-3 d-block text-black" asp-page="AddBookingPage" id="AddBookingBTN">Add Booking</a>
+    </section>
     <section id="bookingtable" class="d-block w-100">
         <table class="table table-striped" id="bookingTable">
             <thead>
@@ -43,7 +47,6 @@
                         <td>
                             <!-- BookingId stored in data-id -->
                             <a class="text-decoration-none text-black btn btn-info" asp-page="UpdateBooking" asp-route-Bookingid="@booking.BookingId">Update</a>
-                            <a class="text-decoration-none text-white btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }

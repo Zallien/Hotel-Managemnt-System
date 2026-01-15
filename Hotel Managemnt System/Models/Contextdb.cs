@@ -15,6 +15,7 @@ namespace Hotel_Managemnt_System.Models
 
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<Bookings> Bookings { get; set; }
+        public virtual DbSet<HotelRooms> HotelRooms { get; set; }
 
 
 
@@ -31,6 +32,13 @@ namespace Hotel_Managemnt_System.Models
             modelBuilder.Entity<Bookings>(Entity =>
             {
                 Entity.ToTable("Bookings");
+                Entity
+                .Property(e => e.Row)
+                .UseIdentityColumn();
+            });
+            modelBuilder.Entity<HotelRooms>(Entity =>
+            {
+                Entity.ToTable("HotelRooms");
                 Entity
                 .Property(e => e.Row)
                 .UseIdentityColumn();

@@ -124,6 +124,32 @@ namespace Hotel_Managemnt_System.Services
             }
         }
 
+        //Delete Booking
+        public async Task<bool> DeleteBooking(Guid BookingId)
+        {
+            try
+            {
+                //var bookingid = new { BookingId = BookingId };
+                var response = await _httpClient.PostAsJsonAsync("api/Booking/DeleteBooking", BookingId);
+                if (response.IsSuccessStatusCode)
+                {
+                    var Res = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<bool>(Res);
+                    return result;
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API error: {response.StatusCode}, content: {error}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in DeleteBooking: {ex.Message}");
+                return false;
+            }
+        }
 
     }
 }

@@ -1,0 +1,44 @@
+﻿@page
+@model Hotel_Managemnt_System.Pages.RoomManagementpageModel
+@{
+    ViewData["Title"] = "Room Management";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Room No</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hotelroom in Model.Rooms)  // <-- assumes you have a Rooms list in your PageModel
+            {
+                <tr>
+                    <td>@hotelroom.RoomNumber</td>
+                    <td>@hotelroom.RoomType</td>
+                    <td>
+                        @if (hotelroom.Status == "Available")
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Occupied</span>
+                        }
+                    </td>
+                    <td>@hotelroom.PricePerNight.ToString("C")</td>
+                    <td>
+                        <a asp-page="/EditRoom" asp-route-id="@hotelroom.RoomId" class="btn btn-sm btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

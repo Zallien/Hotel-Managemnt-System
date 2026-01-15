@@ -10,5 +10,6 @@ namespace Hotel_Managemnt_System.Services
         public Task<bool> AddBooking(AddBookingModel bookingModel);
         public Task<bool> UpdateBooking(AddBookingModel bookingModel);
         public Task<AddBookingModel> GetBookingById(Guid BookingId);
+        public Task<bool> DeleteBooking(Guid BookingId);
     }
 }

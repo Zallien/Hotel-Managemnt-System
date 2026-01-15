@@ -16,8 +16,8 @@ namespace Hotel_Managemnt_System.Pages
 
         [BindProperty]
         public AddBookingModel AddBooking { get; set; }
-
-
+        [BindProperty]
+        public string SearchValue { get; set; } = "";
 
 
         // Constructor injection for services
@@ -29,10 +29,21 @@ namespace Hotel_Managemnt_System.Pages
         // Get method to fetch initial data
         public async Task OnGetAsync()
         {
+            await LoadBookings();
+        }
+
+        public async Task<IActionResult> OnPostSearchAsync()
+        {
+            await LoadBookings();
+            return Page();
+        }
+
+        public async Task LoadBookings()
+        {
             BookingList = await _bookingService.GetAllBookingFilterized(
                 new BookingFilterationModel
                 {
-                    Searchvalue = string.Empty,
+                    Searchvalue = SearchValue ?? string.Empty,
                     Counts = 10,
                     PageNumber = 1
                 }

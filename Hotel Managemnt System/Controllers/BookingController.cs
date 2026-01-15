@@ -3,6 +3,7 @@ using Hotel_Managemnt_System.ServiceModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Hotel_Managemnt_System.Controllers
 {
     [Route("api/[controller]")]
@@ -12,6 +13,7 @@ namespace Hotel_Managemnt_System.Controllers
     {
         private readonly Contextdb _db;
 
+        //Constructor
         public BookingController(Contextdb mdb)
         {
             _db = mdb;
@@ -199,7 +201,25 @@ namespace Hotel_Managemnt_System.Controllers
                           }).ToListAsync();
         }
 
-
-
+        [HttpPost("DeleteBooking")]
+        public async Task<bool> DeleteBooking([FromBody] Guid BookingId)
+        {
+            try
+            {
+                var booking = await _db.Bookings
+                    .FirstOrDefaultAsync(b => b.BookingId == BookingId);
+                if (booking == null)
+                {
+                    return false;
+                }
+                _db.Bookings.Remove(booking);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

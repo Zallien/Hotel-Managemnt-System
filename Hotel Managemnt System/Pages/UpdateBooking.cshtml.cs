@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+
 namespace Hotel_Managemnt_System.Pages
 {
     public class UpdateBookingModel : PageModel

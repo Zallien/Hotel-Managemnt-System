@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/navbar.css" />
 </head>
+
+
+
 <body>
     <div class="container w-100 h-100">
         <section id="companylogo" class="flex-row align-items-center justify-content-between py-3">
@@ -18,14 +21,14 @@
             <a asp-area="" asp-page="Index">Home</a>
             <a asp-area="" asp-page="Bookingpage">Booking</a>
 
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="managementDropdown"
-                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-item position-relative">
+                <a class="nav-link text-white" href="#" id="managementDropdown"
+                   role="button">
                     Management
                 </a>
 
-                <ul class="dropdown-menu p-2" aria-labelledby="managementDropdown">
-                    <li><a class="dropdown-item" asp-area="" asp-page="Rooms">Rooms</a></li>
+                <ul class="py-2 px-3" id="dropdownmenu">
+                    <li><a class="dropdown-item" asp-area="" asp-page="RoomManagementpage">Rooms</a></li>
                     <li><a class="dropdown-item" asp-area="" asp-page="Inventory">Inventory</a></li>
                 </ul>
             </div>
@@ -33,5 +36,7 @@
             <a asp-area="" asp-page="Item2">Payment</a>
         </section>
     </div>
+
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
