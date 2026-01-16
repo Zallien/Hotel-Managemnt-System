@@ -1,0 +1,79 @@
+﻿@page
+@model Hotel_Managemnt_System.Pages.LoginpageModel
+@{
+    Layout = "_LoginLayout";   // use the custom login layout
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    #parentsection {
+        background-image: url('Resources/HotelBG1.jpg');
+        background-size: cover;
+        background-position: center;
+        height:100vh;
+        overflow:hidden;
+    }
+
+    #Logincard{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height:auto;
+        border-radius: 20px;
+        padding: 10px;
+        box-shadow: 0 0 10px #1C1C1C;
+
+        background: rgba(255, 255, 255, 0.2); /* semi-transparent */
+        backdrop-filter: blur(10px); /* frosted blur */
+        -webkit-backdrop-filter: blur(10px); /* Safari support */
+    }
+
+    #Logincard h2{
+        text-align: center;
+        padding:10px 0;
+        margin: 0;
+    }
+
+        #Logincard input{
+            background-color: rgba(255, 255, 255, 0.3);
+            border: thin solid white;
+        }
+
+    #CompanyLogocard{
+        height:fit-content;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    }
+
+    .companylogo{
+        width:80px;
+        height:80px;
+        filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.6));
+    }
+</style>
+
+<section id="parentsection" class="d-flex flex-row p-0 position-relative">
+    <div class="d-block card shadow" id="Logincard">
+        <h2>Login</h2>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input class="form-control" />
+                <span class="text-danger" ></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control"  />
+                <span class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
+    <div id="CompanyLogocard" class="d-flex px-3 py-2 align-items-center ">
+        <img src="~/Resources/ASLogo.png" class="companylogo"/>
+        <label class="fw-semibold">Astriya Hotel</label>
+    </div>
+</section>
+

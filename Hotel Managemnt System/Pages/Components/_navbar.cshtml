@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Hotel_Managemnt_System</title>
+    @* Bootstrap Link *@
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+</head>
+
+
+
+<body>
+    <div class="container w-100 h-100">
+        <section id="companylogo" class="flex-row align-items-center justify-content-between py-3">
+            <img src="Resources/ASLogo.png" alt="Astriya Logo"/>
+            <label class="text-white">Astriya Hotel</label>
+        </section>
+        <section id="mainmenus" class="flex-column">
+            <a asp-area="" asp-page="Index">Home</a>
+            <a asp-area="" asp-page="Bookingpage">Booking</a>
+
+            <div class="nav-item position-relative">
+                <a class="nav-link text-white" href="#" id="managementDropdown"
+                   role="button">
+                    Management
+                </a>
+
+                <ul class="py-2 px-3" id="dropdownmenu">
+                    <li><a class="dropdown-item" asp-area="" asp-page="RoomManagementpage">Rooms</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-page="Inventory">Inventory</a></li>
+                </ul>
+            </div>
+            <a asp-area="" asp-page="Loginpage">Employee</a>
+            <a asp-area="" asp-page="Item2">Payment</a>
+        </section>
+    </div>
+
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

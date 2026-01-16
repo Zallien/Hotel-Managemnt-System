@@ -1,0 +1,46 @@
+﻿@page
+@model Hotel_Managemnt_System.Pages.AddHotelRoompageModel
+@{
+    ViewData["Title"] = "Add Hotel Room";
+}
+
+<section id="ParentSection" class="p-2 overflow-hidden"> 
+    <h3 class="mb-3 fw-bold">Add Hotel Room</h3>
+    <form method="post" class="form px-2">
+        <h3 class="mb-3 pb-2 border-0 border-bottom">Room Information</h3>
+        <div class="row mb-3">
+            <div class="mb-3 col-6">
+                <label asp-for="HotelRoom.RoomNumber" class="form-label">Room Number</label>
+                <input asp-for="HotelRoom.RoomNumber" class="form-control" type="number" required />
+                <span asp-validation-for="HotelRoom.RoomNumber" class="text-danger"></span>
+            </div>
+            <div class="mb-3 col-6">
+                <label asp-for="HotelRoom.PricePerNight" class="form-label">Room Price</label>
+                <input asp-for="HotelRoom.PricePerNight" class="form-control" type="number" required />
+                <span asp-validation-for="HotelRoom.PricePerNight" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 w-75">
+            <label asp-for="HotelRoom.RoomTypeId" class="form-label">Room Type</label>
+            <select asp-for="HotelRoom.RoomTypeId" class="form-select" asp-items="Model.SelectRoomType" required>
+                <option value="@Guid.Empty" selected hidden>Select RoomType</option>
+            </select>
+            <span asp-validation-for="HotelRoom.RoomTypeId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-75">
+            <label asp-for="HotelRoom.Status" class="form-label">Room Status</label>
+            <select asp-for="HotelRoom.Status" class="form-select" required>
+                <option value="" selected hidden>Select Status</option>
+                <option value="Available">Available</option>
+                <option value="Occupied">Occupied</option>
+                <option value="Maintenance">Maintenance</option>
+            </select>
+            <span asp-validation-for="HotelRoom.Status" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex flex-row align-items-center justify-content-end p-2">
+            <a class="text-decoration-none text-white btn btn-secondary mx-2" asp-page="RoomManagementpage">Back</a>
+            <input type="submit" value="Add Room" class="btn btn-primary mx-2" />
+        </div>
+    </form>
+</section>
