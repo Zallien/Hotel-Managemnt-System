@@ -79,23 +79,22 @@ namespace Hotel_Managemnt_System.Controllers
         }
 
         [HttpPost("GetRoomById")]
-        public async Task<HotelRoomsDisplay> GetRoomById([FromBody] Guid roomId)
+        public async Task<AddHotelRoom> GetRoomById([FromBody] Guid roomId)
         {
-            HotelRoomsDisplay roomDetails = null;
+            AddHotelRoom roomDetails = null;
             try
             {
-                roomDetails = await (from a in _db.HotelRooms
-                                     join b in _db.RoomTypes
-                                     on a.RoomTypeId equals b.RoomTypeId
-                                     where a.RoomId == roomId
-                                     select new HotelRoomsDisplay
-                                     {
-                                         RoomId = a.RoomId,
-                                         RoomNumber = a.RoomNumber,
-                                         RoomType = b.RoomTypeName,
-                                         PricePerNight = a.PricePerNight,
-                                         Status = a.Status
-                                     }).FirstOrDefaultAsync();
+                roomDetails = await _db.HotelRooms
+                    .Where(r => r.RoomId == roomId)
+                    .Select(r => new AddHotelRoom
+                    {
+                        RoomId = r.RoomId,
+                        RoomNumber = r.RoomNumber,
+                        RoomTypeId = r.RoomTypeId,
+                        PricePerNight = r.PricePerNight,
+                        Status = r.Status
+                    })
+                    .FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {

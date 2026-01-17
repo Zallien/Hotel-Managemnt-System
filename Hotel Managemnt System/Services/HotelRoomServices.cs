@@ -62,6 +62,75 @@ namespace Hotel_Managemnt_System.Services
             return allrooms;
         }
 
+        //Get Hotel Room by ID
+        public async Task<AddHotelRoom> GetHotelRoomById(Guid RoomId)
+        {
+            AddHotelRoom hotelRoom = new AddHotelRoom();
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"api/HotelRoom/GetRoomById", RoomId);
+                if (response.IsSuccessStatusCode)
+                {
+                    var rawResponse = await response.Content.ReadAsStringAsync();
+                    hotelRoom = JsonConvert.DeserializeObject<AddHotelRoom>(rawResponse) ?? new AddHotelRoom();
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API error: {response.StatusCode}, content: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in GetHotelRoomById: {ex.Message}");
+            }
+            return hotelRoom;
+        }
+
+        //Update Hotel Room
+        public async Task<bool> UpdateHotelRoom(AddHotelRoom hotelroom)
+        {
+            bool isupdated = false;
+            try
+            {
+                if (hotelroom.RoomId == null || hotelroom.RoomId == Guid.Empty)
+                {
+                    return isupdated;
+                }
+                var response = await _httpClient.PostAsJsonAsync($"api/HotelRoom/UpdateHotelRoom", hotelroom);
+                if (response.IsSuccessStatusCode)
+                {
+                    isupdated = true;
+                    return isupdated;
+                }
+            }
+            catch (Exception)
+            {
+                isupdated = false;
+            }
+            return isupdated;
+        }
+
+        //Add New Hotel Room
+        public async Task<bool> AddNewHotelRoom(AddHotelRoom newroom)
+        {
+            bool isAdded = false;
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/HotelRoom/AddNewRoom", newroom);
+                if (response.IsSuccessStatusCode)
+                {
+                    isAdded = true;
+                    return isAdded;
+                }
+            }
+            catch (Exception)
+            {
+                isAdded = false;
+            }
+            return isAdded;
+        }
+
 
     }
 }

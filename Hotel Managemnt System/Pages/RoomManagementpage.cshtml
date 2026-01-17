@@ -19,6 +19,10 @@
     #AddRoomButton:hover{
         transform:scale(1.05);
     }
+
+    .maintenancebadge{
+        background-color: yellow;
+    }
 </style>
 
 <div class="table-responsive p-2 overflow-hidden">
@@ -44,18 +48,22 @@
                         <td>@hotelroom.RoomNumber</td>
                         <td>@hotelroom.RoomType</td>
                         <td>
-                            @if (hotelroom.Status == "Available")
+                            @if(hotelroom.Status == "Available")
                             {
                                 <span class="badge bg-success">Available</span>
                             }
-                            else
+                            else if (hotelroom.Status == "Occupied")
                             {
                                 <span class="badge bg-danger">Occupied</span>
+                            }
+                            else
+                            {
+                                <span class="badge maintenancebadge text-black">Maintenance</span>
                             }
                         </td>
                         <td>@hotelroom.PricePerNight.ToString("C")</td>
                         <td>
-                            <a asp-page="/EditRoom" asp-route-id="@hotelroom.RoomId" class="btn btn-sm btn-primary fw-semibold">Edit</a>
+                            <a asp-page="EditHotelRoompage" asp-route-HotelRoomId="@hotelroom.RoomId" asp-route-id="@hotelroom.RoomId" class="btn btn-sm btn-primary fw-semibold">Edit</a>
                         </td>
                     </tr>
                 }
