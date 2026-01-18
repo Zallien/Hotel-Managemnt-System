@@ -9,6 +9,7 @@ namespace Hotel_Managemnt_System.Services
         public Task<AddHotelRoom> GetHotelRoomById(Guid RoomId);
         public Task<bool> UpdateHotelRoom(AddHotelRoom hotelroom);
         public Task<bool> AddNewHotelRoom(AddHotelRoom newroom);
+        public Task<List<HotelRoomsDisplay>> GetAvailableRoomsByRoomType(Guid RoomTypeId);
 
     }
 }

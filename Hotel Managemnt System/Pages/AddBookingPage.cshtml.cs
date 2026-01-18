@@ -9,10 +9,14 @@ namespace Hotel_Managemnt_System.Pages
 {
     public class AddBookingPageModel : PageModel
     {
-        [BindProperty]
-        public AddBookingModel Booking { get; set; } = new();
         private readonly IBooking _bookingservice;
         private readonly IRoomServices _roomservice;
+        private readonly IHotelRoom _hotelroomservice;
+
+
+        [BindProperty]
+        public AddBookingModel Booking { get; set; } = new();
+
         public SelectList SelectRoomType { get; set; }
         public SelectList SelectBookingStatus { get; set; } = new SelectList(new[]
         {
@@ -28,10 +32,11 @@ namespace Hotel_Managemnt_System.Pages
         }, "Value", "Text");
 
 
-        public AddBookingPageModel(IBooking bookingservice, IRoomServices roomservice)
+        public AddBookingPageModel(IBooking bookingservice, IRoomServices roomservice, IHotelRoom hotelroomservice)
         {
             _bookingservice = bookingservice;
             _roomservice = roomservice;
+            _hotelroomservice = hotelroomservice;
         }
 
         public async Task OnGetAsync()
@@ -39,6 +44,8 @@ namespace Hotel_Managemnt_System.Pages
             await LoadRoomTypesAsync();
         }
 
+
+        // Handle form submission
         public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
@@ -49,7 +56,7 @@ namespace Hotel_Managemnt_System.Pages
             await _bookingservice.AddBooking(Booking);
             return RedirectToPage("Bookingpage");
         }
-
+        // Load Room Types for dropdown
         private async Task LoadRoomTypesAsync()
         {
             try
@@ -60,6 +67,21 @@ namespace Hotel_Managemnt_System.Pages
             catch (Exception ex)
             {
 
+            }
+        }
+
+        // Load Available Rooms based on selected Room Type
+        public async Task<JsonResult> OnGetAvailableRoomsAsync(Guid roomTypeId)
+        {
+            try
+            {
+                var availableRooms = await _hotelroomservice.GetAvailableRoomsByRoomType(roomTypeId);
+                var roomNumbers = availableRooms.Select(r => r.RoomNumber).ToList();
+                return new JsonResult(roomNumbers);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new List<int>());
             }
         }
     }

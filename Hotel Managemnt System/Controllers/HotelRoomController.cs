@@ -134,5 +134,59 @@ namespace Hotel_Managemnt_System.Controllers
             }
             return isUpdated;
         }
+
+        [HttpPost("FilterRoomAvailableByRoomType")]
+        public async Task<List<HotelRoomsDisplay>> FilterRoomAvailableByRoomType([FromBody] Guid roomTypeId)
+        {
+            List<HotelRoomsDisplay> filteredRooms = new List<HotelRoomsDisplay>();
+            try
+            {
+                filteredRooms = await (from a in _db.HotelRooms
+                                       join b in _db.RoomTypes
+                                       on a.RoomTypeId equals b.RoomTypeId
+                                       where a.RoomTypeId == roomTypeId && a.Status == "Available"
+                                       select new HotelRoomsDisplay
+                                       {
+                                           RoomId = a.RoomId,
+                                           RoomNumber = a.RoomNumber,
+                                           RoomType = b.RoomTypeName,
+                                           PricePerNight = a.PricePerNight,
+                                           Status = a.Status
+                                       }).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                // log ex if needed
+            }
+            return filteredRooms;
+        }
+
+        [HttpPost("FilterRoomAvailableByRoomTypeJSON")]
+        public async Task<IActionResult> FilterRoomAvailableByRoomTypeJSON([FromBody] Guid roomTypeId)
+        {
+            try
+            {
+                var filteredRooms = await (from a in _db.HotelRooms
+                                           join b in _db.RoomTypes
+                                           on a.RoomTypeId equals b.RoomTypeId
+                                           where a.RoomTypeId == roomTypeId && a.Status == "Available"
+                                           select new HotelRoomsDisplay
+                                           {
+                                               RoomId = a.RoomId,
+                                               RoomNumber = a.RoomNumber,
+                                               RoomType = b.RoomTypeName,
+                                               PricePerNight = a.PricePerNight,
+                                               Status = a.Status
+                                           }).ToListAsync();
+
+                return Ok(filteredRooms); 
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
     }
 }

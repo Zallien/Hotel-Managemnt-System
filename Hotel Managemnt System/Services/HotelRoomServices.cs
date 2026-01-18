@@ -131,6 +131,31 @@ namespace Hotel_Managemnt_System.Services
             return isAdded;
         }
 
+        //Filter Available Rooms based on Room Type
+        public async Task<List<HotelRoomsDisplay>> GetAvailableRoomsByRoomType(Guid RoomTypeId)
+        {
+            var availableRooms = new List<HotelRoomsDisplay>();
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/HotelRoom/FilterRoomAvailableByRoomType", RoomTypeId);
+                if (response.IsSuccessStatusCode)
+                {
+                    var rawResponse = await response.Content.ReadAsStringAsync();
+                    availableRooms = JsonConvert.DeserializeObject<List<HotelRoomsDisplay>>(rawResponse) ?? new List<HotelRoomsDisplay>();
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API error: {response.StatusCode}, content: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in GetAvailableRoomsByRoomType: {ex.Message}");
+            }
+            return availableRooms;
+        }
+
 
     }
 }

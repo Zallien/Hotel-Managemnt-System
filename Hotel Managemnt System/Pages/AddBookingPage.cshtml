@@ -55,14 +55,27 @@
         <div class="row mb-3">
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomType" class="form-label">Room Type</label>
-                <select asp-for="Booking.RoomType" class="form-select" asp-items="Model.SelectRoomType" required>
+                <select asp-for="Booking.RoomType" 
+                    class="form-select" 
+                    asp-items="Model.SelectRoomType" 
+                    required 
+                    id="RoomTypeSelect"
+                    onchange="FetchavailableRooms()">
+
                     <option value="@Guid.Empty">Select RoomType</option>
                 </select>
                 <span asp-validation-for="Booking.RoomType" class="text-danger"></span>
             </div>
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomNumber" class="form-label">Room Number</label>
-                <input asp-for="Booking.RoomNumber" class="form-control" type="number" required/>
+                <select asp-for="Booking.RoomNumber" 
+                    class="form-select" 
+                    required 
+                    id="RoomNumberList"
+                    >
+
+                    <option value="0" hidden selected>Select RoomNumber</option>
+                </select>
                 <span asp-validation-for="Booking.RoomNumber" class="text-danger"></span>
             </div>
         </div>
@@ -112,4 +125,49 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        function FetchavailableRooms(){
+            var roomTypeSelectvalue = document.getElementById("RoomTypeSelect").value;
+
+            fetch('api/HotelRoom/FilterRoomAvailableByRoomTypeJSON', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(roomTypeSelectvalue) // pass the Guid
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Filtered rooms:", data);
+
+                const roomNumberSelect = document.getElementById("RoomNumberList");
+                if (!roomNumberSelect) {
+                    console.error("Select element with id 'RoomNumberList' not found!");
+                    return;
+                }
+
+                roomNumberSelect.innerHTML = '';
+
+                data.forEach(room => {
+                    const option = document.createElement("option");
+                    option.value = room.roomId; // unique identifier
+                    option.text = `Room ${room.roomNumber} - ${room.roomType} (${room.status})`;
+                    roomNumberSelect.appendChild(option);
+                });
+            })
+
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+        }
+
+    </script>
+    
 }
