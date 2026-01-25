@@ -52,7 +52,7 @@
                 <span asp-validation-for="Booking.SpecialRequests" class="text-danger"></span>
             </div>
         </div>
-        <h4 class="mb-2 pb-2 border-0 border-bottom">Room Information</h4>
+        @* <h4 class="mb-2 pb-2 border-0 border-bottom">Room Information</h4>
         <div class="row mb-3">
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomType" class="form-label">Room Type</label>
@@ -81,19 +81,21 @@
 
                 <span asp-validation-for="Booking.RoomNumber" class="text-danger"></span>
             </div>
-        </div>
+        </div> *@
+        <input type="hidden" asp-for="Booking.RoomType" id="RoomTypeSelect" />
+        <input type="hidden" asp-for="Booking.RoomNumber" id="RoomNumberSelect"  />
         <h4 class="mb-2 pb-2 border-0 border-bottom">Booking Date Information</h4>
         <div class="row mb-3">
             <div class="mb-2 col-6">
                 <label asp-for="Booking.CheckIn" class="form-label">Check In Date</label>
                 <input asp-for="Booking.CheckIn" id="CheckinDate" type="date" class="form-control"
-                    min="@DateTime.Now.ToString("yyyy-MM-dd")" max="2099-12-31" required />
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="2099-12-31" onchange="CalculateTotalAmount()" />
                 <span asp-validation-for="Booking.CheckIn" class="text-danger"></span>
             </div>
             <div class="mb-2 col-6">
                 <label asp-for="Booking.CheckOut" class="form-label">Check Out Date</label>
                 <input asp-for="Booking.CheckOut" id="CheckoutDate" type="date" class="form-control"
-                    min="@DateTime.Now" max="2099-12-31" required />
+                       min="@DateTime.Now" max="2099-12-31" required onchange="CalculateTotalAmount()" />
                 <span asp-validation-for="Booking.CheckOut" class="text-danger"></span>
             </div>
         </div>
@@ -122,7 +124,7 @@
             </div>
             <div class="mb-2 col-6">
                 <label asp-for="Booking.Payment" class="form-label">Total Payment</label>
-                <input asp-for="Booking.Payment" type="number" class="form-control" value="0" />
+                <input asp-for="Booking.Payment" type="number" class="form-control"/>
                 <span asp-validation-for="Booking.Payment" class="text-danger"></span>
             </div>
         </div>

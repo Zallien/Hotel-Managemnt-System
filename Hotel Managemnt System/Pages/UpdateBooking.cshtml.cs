@@ -44,7 +44,7 @@ namespace Hotel_Managemnt_System.Pages
                 return RedirectToPage("Bookingpage");
             }
 
-            await LoadRoomTypesAsync();
+            //await LoadRoomTypesAsync();
             await LoadBookingDetailsAsync(bookingId);
 
             if (Booking == null)
@@ -61,13 +61,13 @@ namespace Hotel_Managemnt_System.Pages
         {
             if (!ModelState.IsValid)
             {
-                await LoadRoomTypesAsync();
+                //await LoadRoomTypesAsync();
                 return Page();
             }
 
             if (Booking.BookingId == Guid.Empty)
             {
-                await LoadRoomTypesAsync();
+                //await LoadRoomTypesAsync();
                 return Page();
             }
 
@@ -93,7 +93,7 @@ namespace Hotel_Managemnt_System.Pages
         {
             try
             {
-                // Assuming there's a method in IBooking to get booking details by ID
+                
                 Booking = await _bookingService.GetBookingById(bookingId);
             }
             catch (Exception ex)

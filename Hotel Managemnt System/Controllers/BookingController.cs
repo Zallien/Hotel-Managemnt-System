@@ -142,6 +142,7 @@ namespace Hotel_Managemnt_System.Controllers
                 existingBooking.UpdatedAt = DateTime.Now;
                 existingBooking.NumberOfGuests = bookingdetails.NumberOfGuests;
                 existingBooking.SpecialRequests = bookingdetails.SpecialRequests;
+                existingBooking.PaymentAmount = bookingdetails.Payment;
 
                 // Save changes to database
                 _db.Bookings.Update(existingBooking);
@@ -179,7 +180,8 @@ namespace Hotel_Managemnt_System.Controllers
                         PaymentStatus = booking.PaymentStatus,
                         BookingStatus = booking.BookingStatus,
                         NumberOfGuests = booking.NumberOfGuests,
-                        SpecialRequests = booking.SpecialRequests
+                        SpecialRequests = booking.SpecialRequests,
+                        Payment = booking.PaymentAmount
                     };
                 }
             }
