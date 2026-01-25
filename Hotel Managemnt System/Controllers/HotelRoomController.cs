@@ -188,5 +188,23 @@ namespace Hotel_Managemnt_System.Controllers
             }
         }
 
+        [HttpPost("GetRoomPriceByRoomId")]
+        public async Task<IActionResult> GetRoomPriceByRoomId([FromBody] Guid roomId)
+        {
+            decimal roomPrice = 0;
+            try
+            {
+                var room = await _db.HotelRooms.FirstOrDefaultAsync(r => r.RoomId == roomId);
+                if (room != null)
+                {
+                    roomPrice = room.PricePerNight;
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+            return Ok(roomPrice);
+        }
     }
 }

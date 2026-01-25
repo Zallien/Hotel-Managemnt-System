@@ -20,7 +20,7 @@ namespace Hotel_Managemnt_System.ServiceModels
         [Required(ErrorMessage = "Room Type is Required")]
         public Guid RoomType { get; set; }
         [Required(ErrorMessage = "Room Number is Required")]
-        public int RoomNumber { get; set; }
+        public Guid RoomNumber { get; set; }
 
         // Booking Details
         [Required(ErrorMessage = "Check In Date is Required"), Range(typeof(DateTime), "2024-01-01", "2099-12-31")]
@@ -35,6 +35,8 @@ namespace Hotel_Managemnt_System.ServiceModels
         public string PaymentStatus { get; set; }
         [Required(ErrorMessage = "Booking Status is Required")]
         public string BookingStatus { get; set; }
+        [Required(ErrorMessage = "Payment is Required")]
+        public decimal Payment { get; set; }
 
         //Guest
         [Required(ErrorMessage = "Number of Guest is Required")]

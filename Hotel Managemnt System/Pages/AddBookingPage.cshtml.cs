@@ -50,12 +50,14 @@ namespace Hotel_Managemnt_System.Pages
         {
             if (!ModelState.IsValid)
             {
+                await LoadRoomTypesAsync();
                 return Page();
             }
 
             await _bookingservice.AddBooking(Booking);
             return RedirectToPage("Bookingpage");
         }
+
         // Load Room Types for dropdown
         private async Task LoadRoomTypesAsync()
         {

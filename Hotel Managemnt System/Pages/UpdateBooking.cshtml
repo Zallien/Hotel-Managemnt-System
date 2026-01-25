@@ -56,14 +56,29 @@
         <div class="row mb-3">
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomType" class="form-label">Room Type</label>
-                <select asp-for="Booking.RoomType" class="form-select" asp-items="Model.SelectRoomType" required>
+                <select asp-for="Booking.RoomType"
+                        class="form-select"
+                        asp-items="Model.SelectRoomType"
+                        required
+                        id="RoomTypeSelect"
+                        onchange="FetchavailableRooms()">
+
                     <option value="@Guid.Empty" selected hidden>Select RoomType</option>
                 </select>
+
                 <span asp-validation-for="Booking.RoomType" class="text-danger"></span>
             </div>
             <div class="mb-2 col-6">
                 <label asp-for="Booking.RoomNumber" class="form-label">Room Number</label>
-                <input asp-for="Booking.RoomNumber" class="form-control" type="number" required />
+                <select asp-for="Booking.RoomNumber"
+                        class="form-select"
+                        required
+                        id="RoomNumberSelect"
+                        onchange="CalculateTotalAmount()">
+
+                    <option value="@Guid.Empty" hidden selected>Select RoomNumber</option>
+                </select>
+
                 <span asp-validation-for="Booking.RoomNumber" class="text-danger"></span>
             </div>
         </div>
@@ -71,12 +86,14 @@
         <div class="row mb-3">
             <div class="mb-2 col-6">
                 <label asp-for="Booking.CheckIn" class="form-label">Check In Date</label>
-                <input asp-for="Booking.CheckIn" type="date" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="2099-12-31" required />
+                <input asp-for="Booking.CheckIn" id="CheckinDate" type="date" class="form-control"
+                    min="@DateTime.Now.ToString("yyyy-MM-dd")" max="2099-12-31" required />
                 <span asp-validation-for="Booking.CheckIn" class="text-danger"></span>
             </div>
             <div class="mb-2 col-6">
                 <label asp-for="Booking.CheckOut" class="form-label">Check Out Date</label>
-                <input asp-for="Booking.CheckOut" type="date" class="form-control" min="@DateTime.Now" max="2099-12-31" required />
+                <input asp-for="Booking.CheckOut" id="CheckoutDate" type="date" class="form-control"
+                    min="@DateTime.Now" max="2099-12-31" required />
                 <span asp-validation-for="Booking.CheckOut" class="text-danger"></span>
             </div>
         </div>
@@ -97,10 +114,17 @@
                 <span asp-validation-for="Booking.PaymentStatus" class="text-danger"></span>
             </div>
         </div>
-        <div class="mb-2 ">
-            <label asp-for="Booking.TotalAmount" class="form-label">Total Amount</label>
-            <input asp-for="Booking.TotalAmount" type="number" class="form-control" readonly />
-            <span asp-validation-for="Booking.TotalAmount" class="text-danger"></span>
+        <div class="row mb-3">
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.TotalAmount" class="form-label">Total Amount</label>
+                <input asp-for="Booking.TotalAmount" id="TotalAmounttext" type="number" class="form-control" readonly />
+                <span asp-validation-for="Booking.TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="mb-2 col-6">
+                <label asp-for="Booking.Payment" class="form-label">Total Payment</label>
+                <input asp-for="Booking.Payment" type="number" class="form-control" value="0" />
+                <span asp-validation-for="Booking.Payment" class="text-danger"></span>
+            </div>
         </div>
         <div class="d-flex flex-row align-items-center justify-content-end">
             <a class="text-decoration-none text-white btn btn-secondary mx-2" asp-page="Bookingpage">Back</a>
@@ -113,4 +137,127 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+
+
+        function FetchavailableRooms(){
+            var roomTypeSelectvalue = document.getElementById("RoomTypeSelect").value;
+
+            fetch('api/HotelRoom/FilterRoomAvailableByRoomTypeJSON', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(roomTypeSelectvalue) // pass the Guid
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Filtered rooms:", data);
+
+                const roomNumberSelect = document.getElementById("RoomNumberSelect");
+                if (!roomNumberSelect) {
+                    console.error("Select element with id 'RoomNumberList' not found!");
+                    return;
+                }
+
+                roomNumberSelect.innerHTML = '<option value="@Guid.Empty" hidden selected>Select RoomNumber</option>';
+
+                data.forEach(room => {
+                    const option = document.createElement("option");
+                    option.value = room.roomId; // unique identifier
+                    option.text = `Room ${room.roomNumber} - ${room.roomType} (${room.status})`;
+                    roomNumberSelect.appendChild(option);
+                });
+            })
+
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+        }
+
+        function CalculateTotalAmount(){
+            console.log("Reading . . . ")
+            var roomNumberValue = document.getElementById("RoomNumberSelect").value;
+
+
+            console.log("Selected Room ID:", roomNumberValue);
+            //Check if room selection is valid
+            if (!roomNumberValue || roomNumberValue === "@Guid.Empty") {
+                return;
+            }
+
+            // Get 2 Dates
+            var checkInValue = document.getElementById("CheckinDate").value;
+            var checkOutValue = document.getElementById("CheckoutDate").value;
+            //console.log("checkin and checkout: ", checkInValue , checkOutValue);
+
+            if (!checkInValue || !checkOutValue) {
+                alert("Please select both check-in and check-out dates.");
+                return;
+            }
+
+            var checkInDate = new Date(checkInValue);
+            var checkOutDate = new Date(checkOutValue);
+
+            // Ensure check-out is after check-in
+            if (checkOutDate > checkInDate) {
+                var timeDifference = checkOutDate.getTime() - checkInDate.getTime();
+                var dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+                fetch('api/HotelRoom/GetRoomPriceByRoomId', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(roomNumberValue) // pass the Guid
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //console.log(data);
+                    var roomPrice = data;
+                    var totalAmount = roomPrice * dayDifference;
+                    //console.log("Roomprice and totalamount: ",roomPrice,totalAmount);
+                    document.getElementById("TotalAmounttext").value = totalAmount;
+
+                })
+
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+
+
+
+
+
+            } else {
+                alert("Check-out date must be after check-in date.");
+                // Convert check-in string to Date
+                var checkInDateObj = new Date(checkInValue);
+
+                // Add 1 day
+                checkInDateObj.setDate(checkInDateObj.getDate() + 1);
+
+                // Format back to yyyy-mm-dd
+                var formattedCheckOut = checkInDateObj.toISOString().split('T')[0];
+
+                // Set the checkout input value
+                document.getElementById("CheckoutDate").value = formattedCheckOut;
+
+            }
+
+        }
+
+    </script>
 }

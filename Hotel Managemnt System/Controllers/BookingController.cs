@@ -35,6 +35,7 @@ namespace Hotel_Managemnt_System.Controllers
 
                 allbookings = await (from b in _db.Bookings
                                      join r in _db.RoomTypes on b.RoomTypeId equals r.RoomTypeId
+                                     join rm in _db.HotelRooms on b.RoomNumber equals rm.RoomId
                                      where string.IsNullOrEmpty(filterModel.Searchvalue)
                                            || b.GuestName.ToLower().Contains(filterModel.Searchvalue)
                                      select new DisplayBooking
@@ -44,7 +45,7 @@ namespace Hotel_Managemnt_System.Controllers
                                          CheckIn = b.CheckInDate,
                                          CheckOut = b.CheckOutDate,
                                          RoomTypeName = r.RoomTypeName,
-                                         RoomNumber = b.RoomNumber
+                                         RoomNumber = int.Parse(rm.RoomNumber)
                                      })
                                     .Skip((filterModel.PageNumber - 1) * filterModel.Counts)
                                     .Take(filterModel.Counts)
@@ -96,12 +97,16 @@ namespace Hotel_Managemnt_System.Controllers
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                     NumberOfGuests = bookingdetails.NumberOfGuests,
-                    SpecialRequests = bookingdetails.SpecialRequests
+                    SpecialRequests = bookingdetails.SpecialRequests,
+                    PaymentAmount = bookingdetails.Payment
                 };
 
                 // Save to database
                 await _db.Bookings.AddAsync(newBooking);
                 await _db.SaveChangesAsync();
+
+                // Change room availability
+                await ChangeRoomAvailability(bookingdetails.RoomNumber);
 
                 return true;
             }
@@ -190,6 +195,7 @@ namespace Hotel_Managemnt_System.Controllers
         {
             return await (from b in _db.Bookings
                           join r in _db.RoomTypes on b.RoomTypeId equals r.RoomTypeId
+                          join rm in _db.HotelRooms on b.RoomNumber equals rm.RoomId
                           select new DisplayBooking
                           {
                               BookingId = b.BookingId,
@@ -197,7 +203,7 @@ namespace Hotel_Managemnt_System.Controllers
                               CheckIn = b.CheckInDate,
                               CheckOut = b.CheckOutDate,
                               RoomTypeName = r.RoomTypeName,
-                              RoomNumber = b.RoomNumber
+                              RoomNumber = int.Parse(rm.RoomNumber)
                           }).ToListAsync();
         }
 
@@ -215,6 +221,35 @@ namespace Hotel_Managemnt_System.Controllers
                 _db.Bookings.Remove(booking);
                 await _db.SaveChangesAsync();
                 return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+
+
+
+        // Helper method to change room availability
+        private async Task<bool> ChangeRoomAvailability(Guid roomnumberid)
+        {
+            try
+            {
+                bool isdone = false;
+                var room = await _db.HotelRooms
+                    .FirstOrDefaultAsync(r => r.RoomId == roomnumberid);
+                if (room != null)
+                {
+                    room.Status = "Occupied";
+                    _db.HotelRooms.Update(room);
+                    await _db.SaveChangesAsync();
+                    isdone = true;
+                    return isdone;
+                }
+                return isdone;
             }
             catch (Exception ex)
             {

@@ -16,7 +16,7 @@ namespace Hotel_Managemnt_System.Models
 
         // Room details
         public Guid RoomTypeId { get; set; }
-        public int RoomNumber { get; set; }
+        public Guid RoomNumber { get; set; }
 
         // Dates
         public DateTime CheckInDate { get; set; }
@@ -28,6 +28,7 @@ namespace Hotel_Managemnt_System.Models
 
         // Payment & status
         public decimal TotalAmount { get; set; }
+        public decimal PaymentAmount { get; set; }
         public string PaymentStatus { get; set; } // e.g. Pending, Paid
         public string BookingStatus { get; set; } // e.g. Confirmed, Cancelled
 
