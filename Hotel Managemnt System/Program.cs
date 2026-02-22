@@ -20,7 +20,7 @@ builder.Services.AddDbContext<Hotel_Managemnt_System.Models.Contextdb>(options =
 builder.Services.AddSingleton<IBooking, BookingServices>();
 builder.Services.AddSingleton<IRoomServices, RoomServices>();
 builder.Services.AddSingleton<IHotelRoom, HotelRoomServices>();
-
+builder.Services.AddSingleton<iInventory, InventoryManagementServices>();
 
 //Register HttpClient
 builder.Services.AddHttpClient<IBooking, BookingServices>(client =>
@@ -32,6 +32,10 @@ builder.Services.AddHttpClient<IRoomServices, RoomServices>(client =>
     client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
 });
 builder.Services.AddHttpClient<IHotelRoom, HotelRoomServices>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
+builder.Services.AddHttpClient<iInventory, InventoryManagementServices>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
 });

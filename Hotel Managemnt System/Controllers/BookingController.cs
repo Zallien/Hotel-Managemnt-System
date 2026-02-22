@@ -11,6 +11,7 @@ namespace Hotel_Managemnt_System.Controllers
 
     public class BookingController : Controller
     {
+
         private readonly Contextdb _db;
 
         //Constructor
